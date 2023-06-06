@@ -69,7 +69,7 @@ export default function Game({
   return (
     <main
       dir="rtl"
-      className={`flex min-h-[50vh] flex-col items-center justify-around min-w-screen max-w-2xl mx-auto p-10 select-none ${vazir.className}`}
+      className={`flex min-h-[50vh] font-bold flex-col items-center justify-around min-w-screen max-w-2xl mx-auto p-10 select-none ${vazir.className}`}
     >
       {gameState === "on" ? (
         <div className="flex justify-center flex-1 items-center min-h-[50vh]">
@@ -97,7 +97,7 @@ export default function Game({
           </div>
           {currentIndex < number ? (
             <button
-              className="w-full mx-5 bg-slate-500 rounded-full h-10"
+              className="w-full mx-5 bg-blue-800 text-white rounded-full h-10"
               type="button"
               onClick={() => {
                 if (isReveiled) {
@@ -118,7 +118,7 @@ export default function Game({
             </button>
           ) : (
             <button
-              className="w-full mt-6 mx-5 bg-amber-600 rounded-full h-10"
+              className="w-full mt-6 mx-5 bg-amber-600 text-white rounded-full h-10"
               onClick={() => {
                 setGameState("on");
                 startTimer();

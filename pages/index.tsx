@@ -103,7 +103,7 @@ export default function Home() {
   return (
     <main
       dir="rtl"
-      className={`flex text-xl min-h-screen flex-col leading-10 items-center justify-between min-w-screen max-w-2xl mx-auto p-10 select-none ${vazir.className}`}
+      className={`flex text-xl min-h-screen flex-col leading-10 items-center justify-between min-w-screen font-bold max-w-2xl mx-auto p-10 select-none ${vazir.className}`}
     >
       {isSettingsShown && (
         <div className="min-w-[300px] min-h-[80vh] flex items-center justify-center flex-col rounded-lg">
