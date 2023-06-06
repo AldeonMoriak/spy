@@ -69,7 +69,7 @@ export default function Game({
   return (
     <main
       dir="rtl"
-      className={`flex min-h-[80vh] flex-col items-center justify-between min-w-screen max-w-2xl mx-auto p-10 select-none ${vazir.className}`}
+      className={`flex min-h-screen flex-col items-center justify-around min-w-screen max-w-2xl mx-auto p-10 select-none ${vazir.className}`}
     >
       {gameState === "on" ? (
         <div className="flex justify-center items-center min-h-[80vh]">
