@@ -69,10 +69,10 @@ export default function Game({
   return (
     <main
       dir="rtl"
-      className={`flex min-h-screen flex-col items-center justify-between min-w-screen max-w-2xl mx-auto p-10 select-none ${vazir.className}`}
+      className={`flex min-h-[80vh] flex-1 flex-col items-center justify-between min-w-screen max-w-2xl mx-auto p-10 select-none ${vazir.className}`}
     >
       {gameState === "on" ? (
-        <div className="flex justify-center items-center min-h-screen">
+        <div className="flex justify-center items-center min-h-[80vh]">
           {timer - elapsedTime > 0 ? (
             <div className="text-6xl font-bold">{getTime()}</div>
           ) : (
@@ -82,7 +82,7 @@ export default function Game({
       ) : (
         <>
           {currentIndex < number && <div>نفر {currentIndex + 1}</div>}
-          <div className="flex flex-col min-h-[calc(100vh_-_500px)]">
+          <div className="flex flex-col min-h-[50vh]">
             {isReveiled ? (
               people[currentIndex] === "spy" ? (
                 <span>شما جاسوس هستید</span>
