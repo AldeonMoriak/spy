@@ -103,11 +103,12 @@ export default function Home() {
   return (
     <main
       dir="rtl"
-      className={`flex min-h-screen flex-col items-center justify-between min-w-screen max-w-2xl mx-auto p-10 select-none ${vazir.className}`}
+      className={`flex text-xl min-h-screen flex-col leading-10 items-center justify-between min-w-screen max-w-2xl mx-auto p-10 select-none ${vazir.className}`}
     >
       {isSettingsShown && (
-        <div className="min-w-[300px] border rounded-lg p-5 leading-10">
-          <div className="flex justify-between">
+        <div className="min-w-[300px] min-h-[80vh] flex items-center justify-center flex-col rounded-lg">
+        {/* <div className="min-w-[300px] rounded-lg p-5 "> */}
+          <div className="flex justify-between w-full">
             <div>نفرات</div>
             <div className="flex min-w-[100px] justify-around">
               <span
@@ -125,7 +126,7 @@ export default function Home() {
               </span>
             </div>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between w-full">
             <div>جاسوس</div>
             <div className="flex min-w-[100px] justify-around">
               <span
@@ -143,7 +144,7 @@ export default function Home() {
               </span>
             </div>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between w-full">
             <div>دقیقه</div>
             <div className="flex min-w-[100px] justify-around">
               <span
@@ -161,7 +162,7 @@ export default function Home() {
               </span>
             </div>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between w-full">
             <div>سختی</div>
             <div className="flex min-w-[100px] justify-around">
               <span
@@ -188,7 +189,7 @@ export default function Home() {
         </div>
       )}
       {!isSettingsShown && (
-        <div className="min-w-[300px] flex items-center justify-center flex-col border rounded-lg p-5">
+        <div className="min-w-[300px] min-h-[80vh] flex items-center justify-center flex-col rounded-lg">
           <Link
             href={{
               pathname: "/game",
