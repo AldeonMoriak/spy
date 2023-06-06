@@ -1,118 +1,211 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import Image from "next/image";
+import { Vazirmatn } from "next/font/google";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { HARD_WORDS, MEDIUM_WORDS, WORDS } from "@/utils/words";
 
-const inter = Inter({ subsets: ['latin'] })
+const vazir = Vazirmatn({ subsets: ["arabic"] });
+type NamesType =
+  | "time"
+  | "number"
+  | "difficulty"
+  | "spyNumber"
+  | "easy_words"
+  | "medium_words"
+  | "hard_words";
 
+const DIFFICULTIES = ["آسان", "متوسط", "سخت"];
 export default function Home() {
+  const [number, setNumber] = useState(4);
+  const [difficulty, setDifficulty] = useState(0);
+  const [spyNumber, setSpyNumber] = useState(1);
+  const [time, setTime] = useState(5);
+  const [isSettingsShown, setIsSettingsShown] = useState(false);
+  const handleClickNumber = (value: number) => {
+    const toBeValue = number + value;
+    if (toBeValue >= 2) {
+      setNumber((prev) => prev + value);
+      handleLocalStorage("number", toBeValue.toString());
+    }
+  };
+  const handleClickSpy = (value: number) => {
+    const toBeValue = spyNumber + value;
+    if (toBeValue >= 1 && toBeValue < number) {
+      setSpyNumber((prev) => prev + value);
+      handleLocalStorage("spyNumber", toBeValue.toString());
+    }
+  };
+  const handleClickTime = (value: number) => {
+    const toBeValue = time + value;
+    if (toBeValue >= 5) {
+      setTime(toBeValue);
+      handleLocalStorage("time", toBeValue.toString());
+    }
+  };
+  const handleClickDifficulty = (value: number) => {
+    const toBeValue = difficulty + value;
+    if (toBeValue >= DIFFICULTIES.length) {
+      setDifficulty(0);
+      handleLocalStorage("difficulty", "0");
+    } else if (toBeValue < 0) {
+      const v = DIFFICULTIES.length - 1;
+      setDifficulty(v);
+      handleLocalStorage("difficulty", v.toString());
+    } else {
+      setDifficulty(toBeValue);
+      handleLocalStorage("difficulty", toBeValue.toString());
+    }
+  };
+
+  const getLocalStorageValue = (name: NamesType) => {
+    return localStorage.getItem(name);
+  };
+
+  const setSettings = () => {
+    setNumber(
+      getLocalStorageValue("number")
+        ? parseInt(getLocalStorageValue("number")!)
+        : 4
+    );
+    setDifficulty(
+      getLocalStorageValue("difficulty")
+        ? parseInt(getLocalStorageValue("difficulty")!)
+        : 0
+    );
+    setSpyNumber(
+      getLocalStorageValue("spyNumber")
+        ? parseInt(getLocalStorageValue("spyNumber")!)
+        : 1
+    );
+    setTime(
+      getLocalStorageValue("time") ? parseInt(getLocalStorageValue("time")!) : 5
+    );
+  };
+
+  const handleLocalStorage = (name: NamesType, value: string) => {
+    localStorage.setItem(name, value);
+  };
+
+  useEffect(() => {
+    if (!localStorage.getItem("easy_words")) {
+      handleLocalStorage("easy_words", JSON.stringify(WORDS));
+    }
+    if (!localStorage.getItem("medium_words")) {
+      handleLocalStorage("medium_words", JSON.stringify(MEDIUM_WORDS));
+    }
+    if (!localStorage.getItem("hard_words")) {
+      handleLocalStorage("hard_words", JSON.stringify(HARD_WORDS));
+    }
+  }, []);
+  useEffect(() => {
+    setSettings();
+  }, []);
   return (
     <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
+      dir="rtl"
+      className={`flex min-h-screen flex-col items-center justify-between min-w-screen max-w-2xl mx-auto p-10 select-none ${vazir.className}`}
     >
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">pages/index.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      {isSettingsShown && (
+        <div className="min-w-[300px] border rounded-lg p-5 leading-10">
+          <div className="flex justify-between">
+            <div>نفرات</div>
+            <div className="flex min-w-[100px] justify-around">
+              <span
+                className="w-4 px-2 cursor-pointer"
+                onClick={() => handleClickNumber(1)}
+              >
+                {"<"}
+              </span>
+              <span>{number}</span>
+              <span
+                className="w-4 px-2 cursor-pointer"
+                onClick={() => handleClickNumber(-1)}
+              >
+                {">"}
+              </span>
+            </div>
+          </div>
+          <div className="flex justify-between">
+            <div>جاسوس</div>
+            <div className="flex min-w-[100px] justify-around">
+              <span
+                className="w-4 px-2 cursor-pointer"
+                onClick={() => handleClickSpy(1)}
+              >
+                {"<"}
+              </span>
+              <span>{spyNumber}</span>
+              <span
+                className="w-4 px-2 cursor-pointer"
+                onClick={() => handleClickSpy(-1)}
+              >
+                {">"}
+              </span>
+            </div>
+          </div>
+          <div className="flex justify-between">
+            <div>دقیقه</div>
+            <div className="flex min-w-[100px] justify-around">
+              <span
+                className="w-4 px-2 cursor-pointer"
+                onClick={() => handleClickTime(1)}
+              >
+                {"<"}
+              </span>
+              <span>{time}</span>
+              <span
+                className="w-4 px-2 cursor-pointer"
+                onClick={() => handleClickTime(-1)}
+              >
+                {">"}
+              </span>
+            </div>
+          </div>
+          <div className="flex justify-between">
+            <div>سختی</div>
+            <div className="flex min-w-[100px] justify-around">
+              <span
+                className="w-4 px-2 cursor-pointer"
+                onClick={() => handleClickDifficulty(1)}
+              >
+                {"<"}
+              </span>
+              <span>{DIFFICULTIES[difficulty]}</span>
+              <span
+                className="w-4 px-2 cursor-pointer"
+                onClick={() => handleClickDifficulty(-1)}
+              >
+                {">"}
+              </span>
+            </div>
+          </div>
+          <div
+            className="flex justify-center pt-3 cursor-pointer"
+            onClick={() => setIsSettingsShown(false)}
           >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+            بازگشت
+          </div>
         </div>
-      </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      )}
+      {!isSettingsShown && (
+        <div className="min-w-[300px] flex items-center justify-center flex-col border rounded-lg p-5">
+          <Link
+            href={{
+              pathname: "/game",
+              query: { number, spyNumber, time, difficulty },
+            }}
+            className="py-4 cursor-pointer"
+          >
+            شروع
+          </Link>
+          <div
+            className="py-4 cursor-pointer"
+            onClick={() => setIsSettingsShown(true)}
+          >
+            تنظیمات
+          </div>
+        </div>
+      )}
     </main>
-  )
+  );
 }
