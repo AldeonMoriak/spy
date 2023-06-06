@@ -25,16 +25,10 @@ export default function useTimer(time: string) {
     setStartDate(Date.now());
   };
   const getTime = () => {
-    // const minutes = Math.floor(timer / 60);
-    // const seconds = timer % 60;
-    const tt = timer - Math.floor(elapsedTime);
-    const minutes = Math.floor(tt / 60);
-    const seconds = tt % 60;
-    return (
-      <div className="text-6xl">
-        {minutes}:{seconds > 9 ? seconds : `0${seconds}`}
-      </div>
-    );
+    const currentSeconds = timer - Math.floor(elapsedTime);
+    const minutes = Math.floor(currentSeconds / 60);
+    const seconds = currentSeconds % 60;
+    return `${minutes}:${seconds > 9 ? seconds : '0' + seconds}`;
   };
   return { timer, getTime, startTimer, elapsedTime };
 }

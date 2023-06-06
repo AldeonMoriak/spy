@@ -73,7 +73,11 @@ export default function Game({
     >
       {gameState === "on" ? (
         <div className="flex justify-center items-center min-h-screen">
-          {timer - elapsedTime > 0 ? getTime() : <Link href="/">بازگشت</Link>}
+          {timer - elapsedTime > 0 ? (
+            <div className="text-6xl font-bold">{getTime()}</div>
+          ) : (
+            <Link href="/">بازگشت</Link>
+          )}
         </div>
       ) : (
         <>
